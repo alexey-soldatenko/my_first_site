@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+{%load staticfiles%}
+<html>
+<head>
+	<title>{%block title %}{%endblock%}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link type="text/css" href="{% static 'base.css'%}" rel="stylesheet">
+</head>
+<body>
+<div id="header">
+
+
+
+<div id="enter-registration">
+{%block user_in_out%}
+	<div id="enter">
+	<a href="/login"><i>Войти</i></a>
+</div>
+
+<div id="registration">
+	<a href="/registration"><i>Регистрация</i></a>
+</div>{%endblock%}
+</div>
+
+
+
+
+
+
+	<div id="menu">
+		<ul>
+			<li><a href="/">Главная</a></li>
+			<li><a href="/about">О проекте</a></li>
+			<li><a href="/articles">Все статьи</a></li>
+			<li><a href="/other_sources">Другие источники</a></li>
+			<li>
+				
+			</li>
+		</ul>
+		
+	</div>
+
+</div>
+
+<div class="logo">
+	<img src="{% static 'py.png'%}" width="80%" style="margin-left: 20%;">
+</div>
+
+<div id="left-column">
+
+<div id="find">
+	<form action="../search" method="get" class="search">
+		<input type="search" name="word" placeholder="Search..."> 
+	</form>
+</div>
+
+	<ul class="menu">
+		<li class="title-menu">I Основы программирования на python
+			<ul class ="sub-menu">
+				<li><a href="/python_tutorial/introduce">1.1 Язык Python. Введение</a></li>
+				<li><a href="/python_tutorial/types">1.2 Типы данных</a></li>
+				<li><a href="/python_tutorial/keywords">1.3 Ключевые слова</a></li>
+				<li><a href="/python_tutorial/condition_cycles">1.4 Работа с условиями и циклами</a></li>
+				<li><a href="/python_tutorial/modules">1.5 Импорт модулей</a></li>
+				<li><a href="/python_tutorial/functions">1.6 Функции</a></li>
+				<li><a href="/python_tutorial/classes">1.7 Классы. Введение в ООП</a></li>
+				<li><a href="/python_tutorial/files">1.8 Работа с файлами</a></li>
+			</ul>
+		</li>
+	
+		<li class="title-menu">II Работа с Django
+		
+			<ul class="sub-menu">
+				<li><a href="/django_tutorial/server_app">2.1 Как работает серверное приложение.</a></li>
+				<li><a href="/django_tutorial/MVT">2.2 Теория модели-контроллеры-шаблоны.</a></li>
+				<li><a href="/django_tutorial/models">2.3 Модели. Работа с базой данных.</a></li>
+				<li><a href="/django_tutorial/views">2.4 Представления и их привязка к интернет адресу.</a></li>
+				<li><a href="/django_tutorial/templates">2.5 Шаблоны. Вывод web-страницы.</a></li>
+				<li><a href="/django_tutorial/template_tags">2.6 Шаблоны. Переменные и теги шаблонов.</a></li>
+			</ul>
+		</li>
+	
+	</ul>
+	
+</div>
+
+<article class="context">
+
+	<header class="entry-header">
+
+	<div class="entry-page-title">
+
+	<div class="entry-title">
+		{%block article_name%}{%endblock%}
+	</div>
+	</div>
+	</header>
+	<hr><br>
+	{% block context%} {%endblock%}
+
+
+</article>
+
+<div id="footer">
+ Вся размещенная здесь информация принадлежит сообществу python. &copy;Alexey Soldatenko 2017.
+</div>
+
+</body>
+</html>

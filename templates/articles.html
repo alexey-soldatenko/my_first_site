@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+Все статьи
+{%endblock%}
+{%block article_name%}
+Все статьи
+{%endblock%}
+
+
+
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+
+
+
+
+{%block context%}
+
+<!--В цикле берем название статьи и её контекст.
+Делаем ссылку на статью путем сложения значений part и url_name-->
+
+{%for article in articles%}
+<b><p style="text-align:center">
+<a href="/{{article.part}}/{{article.url_name}}">{{article.title}}</a></p></b>
+<p>{{article.context|truncatewords:50}}</p>
+<br>
+<hr>
+{%endfor%}
+
+<!--Делаем перелистывание страниц
+В условии если есть предыдущая или последущая страница
+делаем на них активные ссылки < или >. А также в цикле делаем ссылки на все имеющиеся страницы пагинатора.-->
+<p style="text-align: center; text-decoration: none">
+
+{%if articles.has_previous%} <a href="/articles/{{articles.previous_page_number}}"> {%endif%} &lt;</a>
+
+{%for num in articles.paginator.page_range%}
+
+
+
+{%if num != articles.number%} <a href="/articles/{{num}}" style="color:black; text-decoration: none">{{num}}</a>|
+{%else%}
+<span style="color:red; font-size: 0.8em">{{num}}</span>|
+{%endif%}
+{%endfor%}
+
+{%if articles.has_next%} <a href="/articles/{{articles.next_page_number}}"> {%endif%}&gt;</a>
+</p>
+<br>
+
+{%endblock%}

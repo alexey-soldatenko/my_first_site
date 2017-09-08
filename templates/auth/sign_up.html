@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+{%load staticfiles%}
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link type="text/css" href="{% static 'login.css'%}" rel="stylesheet">
+</head>
+<body>
+
+<div id="header">
+
+
+<div id="enter-registration">
+	<div id="enter">
+	<a href="#"><i>Войти</i></a>
+</div>
+
+<div id="registration">
+	<a href="/registration"><i>Регистрация</i></a>
+</div>
+</div>
+
+	<div id="menu">
+		<ul>
+			<li><a href="/">Главная</a></li>
+			<li><a href="/about">О проекте</a></li>
+			<li><a href="/articles">Все статьи</a></li>
+			<li><a href="/other_sources">Другие источники</a></li>
+			<li>
+				
+			</li>
+		</ul>
+		
+	</div>
+
+</div>
+
+
+<div class="login">
+<p style="text-align:center; font-family:sans-serif; font-size: 1.2em">Войти</p><hr>
+<form action="" method="post">
+{%csrf_token%}
+	{%for field in form%}
+	<br>
+	<p>Your {{field.name}}:</p>
+	<p>{{field}}</p>
+	{%endfor%}
+	<br>
+	{%if error%}
+	<span style="color:red; font-size: 0.8em">{{error}}</span>
+	{%endif%}
+	<p><input type="submit" value="Войти"></p>
+</form>
+</div>
+
+
+</body>
+</html>

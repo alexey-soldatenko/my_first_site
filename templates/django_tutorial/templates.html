@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+Templates
+{%endblock%}
+{%block article_name%}
+Шаблоны(templates)
+{%endblock%}
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+{%block context%}
+<p>Будучи веб фреймверком, Django позволяет динамически генерировать HTML. Самый распространенный подход - использование шаблонов. Шаблоны содержат статический HTML и динамические данные, рендеринг которых описан специальным синтаксисом.</p><br>
+<p>Django предоставляет стандартный API для загрузки и рендеринга шаблонов, незавимисо от используемого бэкенда. Загрузка включает в себя поиск шаблона по названию и предварительную обработку, обычно выполняется загрузка шаблона в память. Рендеринг означает передачу данных контекста в шаблон и возвращение строки с результатом.</p><br>
+
+
+<p>Настройки</p><br>
+<p>Шаблоны можно настроить с помощью настройки TEMPLATES. Это список, который содержит настройки для систем шаблонов. По умолчанию настройка пустая. settings.py, сгенерированный командой startproject, содержит более полезное значение:</p><br>
+<pre>
+    TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            # ... some options here ...
+        },
+    },
+]
+</pre>
+<p> BACKEND путь для импорта Python к классу бэкенда шаблонов. Встроенные бэкенды это django.template.backends.django.DjangoTemplates и django.template.backends.jinja2.Jinja2.</p><br>
+<p>Т.к. большинство систем шаблонов загружают шаблоны с файлов, настройки содержат:</p>
+
+    <p>DIRS, которая содержим список каталогов с шаблонами. Бэкенд ищет в них шаблон в указанном порядке. Обычно шаблоны хранятся в папке 'templates' в корне проекта.</p>
+
+    <p>APP_DIRS указывает бэкенду искать ли шаблоны в установленных приложениях. Каждый бэкенд определяет определенное название для каталога с шаблонами в приложении.
+</p>
+<p>OPTIONS содержит настройки специфические для бэкенда.</p><br>
+
+
+
+<p>Оставьте ваш комментарий:</p>
+<form action="" method="post">
+{%csrf_token%}
+	<textarea maxlength="300" rows="2" cols="80" name="comment"
+	{%if anonymous%}
+	placeholder="Для отправки комментария вам необходимо войти." 
+	{%else%}
+	placeholder="Ваш комментарий" 
+	{%endif%}
+	></textarea><br>
+	<input type="submit" name="" value="Отправить" style="width: 15em; height: 4em; ">
+</form>
+{%for comment in comments%}
+
+<div {%if forloop.counter|divisibleby:2 %}style="text-align:right; width:60%; margin-left: 20%; background: #f2f2f2" {%else%}style="text-align:left; width:60%; margin-left: 20%;" {%endif%}>
+{{comment.user_name}}:<br>
+<div style="">{{comment.context}}</div>
+{{comment.date|date:"d F, Y"}}
+</div>
+
+{%endfor%}
+{%endblock%}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+Views
+{%endblock%}
+{%block article_name%}
+Представления(views)
+{%endblock%}
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+{%block context%}
+
+<p> View это то место, где мы разместим "логику" работы нашего приложения. Оно запросит информацию из модели, которую мы создали ранее, и передаст её в шаблон. Шаблонами мы займёмся в следующей главе.</p><br>
+<p>В созданном ранее приложении уже есть файл views.py. Хорошо, давай откроем этот файл и посмотрим на его содержимое:</p><br>
+<pre> 
+from django.shortcuts import render
+
+# Create your views here. </pre><br>
+<p>Не слишком много кода. Простейшее представление может выглядеть следующим образом.</p>
+<pre>
+def post_list(request):
+
+	return render(request, 'blog/post_list.html', {})
+
+</pre>
+<p>Как ты можешь заметить, мы создали метод (def) с именем post_list, который принимает в request в качестве аргумента и return (возвращает) результат работы метода render, который соберет наш шаблон страницы blog/post_list.html.</p><br>
+<p>Отлично, теперь остаётся привязать URL-адрес к данному представлению. Для этого переходим в файл urls.py основного пакета проекта. Внутри мы видим следующее:</p>
+
+<pre>
+from django.conf.urls import include, url
+from django.contrib import admin
+
+urlpatterns = [
+    # Examples:
+    # url(r'^$', 'my_site.views.home', name='home'),
+    # url(r'^blog/', include('blog.urls')),
+
+    url(r'^admin/', include(admin.site.urls)),
+   
+]
+</pre>
+<p>И добавляем в список ещё один пункт:</p>
+<pre>
+
+url(r'^blog$', 'blog.views.post_list')
+
+</pre>
+<p>Таким образом при обращении клиента к адресу "domain/blog" на стороне сервера вызовется функция-представление post_list, которая в качестве ответа передаст шаблон 'blog/post_list.html'.</p><br>
+
+<form action="" method="post">
+{%csrf_token%}
+	<textarea maxlength="300" rows="2" cols="80" name="comment"
+	{%if anonymous%}
+	placeholder="Для отправки комментария вам необходимо войти." 
+	{%else%}
+	placeholder="Ваш комментарий" 
+	{%endif%}
+	></textarea><br>
+	<input type="submit" name="" value="Отправить" style="width: 15em; height: 4em; ">
+</form>
+{%for comment in comments%}
+
+<div {%if forloop.counter|divisibleby:2 %}style="text-align:right; width:60%; margin-left: 20%; background: #f2f2f2" {%else%}style="text-align:left; width:60%; margin-left: 20%;" {%endif%}>
+{{comment.user_name}}:<br>
+<div style="">{{comment.context}}</div>
+{{comment.date|date:"d F, Y"}}
+</div>
+
+{%endfor%}
+{%endblock%}

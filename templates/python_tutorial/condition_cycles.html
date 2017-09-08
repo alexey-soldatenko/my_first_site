@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+Условия и циклы в python.
+{%endblock%}
+{%block article_name%}
+Условия (if-elif-else) и циклы (for, while) в Python.
+{%endblock%}
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+{%block context%}
+<p>Условная инструкция if-elif-else (её ещё иногда называют оператором ветвления) - основной инструмент выбора в Python. Проще говоря, она выбирает, какое действие следует выполнить, в зависимости от значения переменных в момент проверки условия.</p>
+
+<p>Сначала записывается часть if с условным выражением, далее могут следовать одна или более необязательных частей elif, и, наконец, необязательная часть else. Общая форма записи условной инструкции if выглядит следующим образом:</p>
+
+<pre>if test1:
+    state1
+elif test2:
+    state2
+else:
+    state3</pre>
+
+<p><b>Проверка истинности в Python:</b></p>
+
+<p>- Любое число, не равное 0, или непустой объект - истина.</p>
+
+<p>- Числа, равные 0, пустые объекты и значение None - ложь.</p>
+
+<p>- Операции сравнения применяются к структурам данных рекурсивно.</p>
+
+<p>- Операции сравнения возвращают True или False.</p>
+
+<p>Логические операторы and и or возвращают истинный или ложный объект-операнд.</p>
+
+<p>Логические операторы:</p>
+
+<p><b>И</b> - Истина, если оба значения X <b>и</b> Y истинны.</p>
+
+<p>X and Y</p>
+
+<p> <b>Или</b> - Истина, если хотя бы одно из значений X <b>или</b> Y истинно.</p>
+
+<p>X and Y</p>
+
+<p><b>Не</b> - Истина, если X ложно.</p>
+<p>not X </p><br>
+
+<p>Циклы</p>
+
+
+<p>While - один из самых универсальных циклов в Python, поэтому довольно медленный. Выполняет тело цикла до тех пор, пока условие цикла истинно.</p>
+<pre>
+>>> i = 10
+>>> while i > 0:
+...     print(i)
+...     i = i - 1
+... 
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+
+</pre>
+<p>Цикл for уже чуточку сложнее, чуть менее универсальный, но выполняется гораздо быстрее цикла while. Этот цикл проходится по любому итерируемому объекту (например строке или списку), и во время каждого прохода выполняет тело цикла.</p>
+<pre>
+>>> for i in range(10):
+...     print(i)
+... 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+</pre>
+<p>Оператор continue начинает следующий проход цикла, минуя оставшееся тело цикла (for или while)</p>
+
+<p>Оператор break досрочно прерывает цикл.</p>
+<pre>
+>>> for i in range(10, 20):
+...     if i == 12:
+...             continue
+...     if i == 18:
+...             break
+...     print(i)
+... 
+10
+11
+13
+14
+15
+16
+17
+
+</pre>
+<p>Слово else, примененное в цикле for или while, проверяет, был ли произведен выход из цикла инструкцией break, или же "естественным" образом. Блок инструкций внутри else выполнится только в том случае, если выход из цикла произошел без помощи break.</p>
+
+<br>
+
+<form action="" method="post">
+{%csrf_token%}
+	<textarea maxlength="300" rows="2" cols="80" name="comment"
+	{%if anonymous%}
+	placeholder="Для отправки комментария вам необходимо войти." 
+	{%else%}
+	placeholder="Ваш комментарий" 
+	{%endif%}
+	></textarea><br>
+	<input type="submit" name="" value="Отправить" style="width: 15em; height: 4em; ">
+</form>
+{%for comment in comments%}
+
+<div {%if forloop.counter|divisibleby:2 %}style="text-align:right; width:60%; margin-left: 20%; background: #f2f2f2" {%else%}style="text-align:left; width:60%; margin-left: 20%;" {%endif%}>
+{{comment.user_name}}:<br>
+<div style="">{{comment.context}}</div>
+{{comment.date|date:"d F, Y"}}
+</div>
+{%endfor%}
+
+{%endblock%}

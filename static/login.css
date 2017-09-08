@@ -1,0 +1,96 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	background: #f2f2f2;
+	font-family: Roboto, Helvetica, sans-serif;
+	font-size: 1.2rem;
+	line-height: 1.6;
+	text-rendering: optimizeLegibility;
+
+}
+
+ul li{
+	list-style: none;
+}
+
+a{
+	color: black;
+	text-decoration: none;
+}
+
+
+#enter-registration{
+	float: right;
+	padding: 1%;
+
+	border: 3px solid #f2f2f2;
+	border-bottom: none;
+	border-right: none;
+	border-top: none;
+	
+}
+
+
+#enter a, #registration a{
+	color: white;
+}
+
+
+
+
+#header{
+	float: left;
+	background: rgba(0,0,255,0.5);
+	width: 100%;
+	box-sizing: border-box;	
+	
+	
+}
+
+
+#menu{
+	
+	padding-top: 2%;
+	padding-bottom: 2%;
+	text-align: center;
+	top: 0;
+	right: 0;
+	
+
+}
+
+#menu  ul li{
+	display: inline;
+	margin-left: 5%;
+}
+
+#menu ul li:hover{
+	border: 3px solid white;
+	border-right: none;
+	border-left: none;
+}
+
+#menu  ul li a{
+	color: white;
+}
+
+.login{
+	float: left;
+	margin-top: 3%;
+	margin-left: 40%;
+	margin-bottom: 2%;
+	box-sizing: border-box;
+	padding: 50px;
+	background: white;
+}
+
+.login input {
+	
+	background: rgba(0,1,0,.03);
+	margin: 0;
+	font-family: Roboto, Helvetica, sans-serif;
+	font-size: 1.2rem;
+	width: 100%;
+}

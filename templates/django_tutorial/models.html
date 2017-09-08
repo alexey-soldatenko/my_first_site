@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+Models
+{%endblock%}
+{%block article_name%}
+Модели. Работа с базой данных.
+{%endblock%}
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+{%block context%}
+<p>Модель в Django  </p><br>
+<p>Модель в Django это объект определенного свойства - он хранится в базе данных. База данных представляет собой совокупность различных данных. Это то место, где ты будешь хранить информацию о своих пользователях, записях в блоге и т.д. Мы будем использовать базу данных SQLite для хранения информации. Это стандартная база данных в Django -- её вполне хватит для наших нужд сейчас. Ты можешь представить модель в базе данных как электронную таблицу с колонками (полями) и строками (данными).</p><br>
+
+
+<p>Создание приложения</p><br>
+<p> Для аккуратности мы создадим отдельное приложение в нашем проекте. Очень удобно иметь хорошо организованное рабочее место с самого начала. Для создания приложения нам понадобиться набрать следующую инструкцию в командной строке (из директории djangogirls, где находится файл manage.py):</p><br>
+<pre>
+python manage.py startapp blog 
+</pre>
+<br>
+<p> Обрати внимание, что в нашем проекте появилась новая папка blog, которая содержит некоторые файлы. Структура нашего проекта, таким образом, будет выглядеть так:</p>
+<pre> 
+├── mysite
+|       __init__.py
+|       settings.py
+|       urls.py
+|       wsgi.py
+├── manage.py
+└── blog
+    ├── migrations
+    |       __init__.py
+    ├── __init__.py
+    ├── admin.py
+    ├── models.py
+    ├── tests.py
+    └── views.py </pre><br>
+<p>После того как приложение создано, нам нужно сообщить Django, что теперь он должен его использовать. Мы сделаем это через файл mysite/settings.py. Нам нужно найти INSTALLED_APPS и добавить к списку 'blog', прямо перед ). Конечный результат должен выглядеть следующим образом:</p>
+<pre>
+	INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'blog',
+)
+</pre>
+<p>Создание модели записи в блоге</p>
+<p>В файле blog/models.py мы определяем все Модели - модель записи для блога также пойдет сюда.
+
+Открой файл blog/models.py, удали весь текст и вставь на его место следующий код:</p>
+<pre>
+from django.db import models
+from django.utils import timezone
+
+
+class Post(models.Model):
+    author = models.ForeignKey('auth.User')
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(
+            default=timezone.now)
+    published_date = models.DateTimeField(
+            blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.title
+</pre>
+<p>
+	class Post(models.Model): -- эта строка определяет нашу модель (объект).
+
+    class это специальное ключевое слово для определения объектов.
+    Post это имя нашей модели, мы можем поменять его при желании (специальные знаки и пробелы использовать нельзя). Всегда начинай имена классов с прописной буквы.
+    models.Model означает, что объект Post является моделью Django, так Django поймет, что он должен сохранить его в базу данных.
+
+</p>
+<p>Дальше мы задаем свойства, о которых уже говорили: title, text, created_date, published_date и author. Чтобы это сделать нам нужно определиться с типом полей (это текст? число? дата? ссылка на другой объект? например, на пользователя?).</p>
+<p>Создаем таблицы моделей в базе данных</p>
+<p>Последним шагом будет добавление нашей модели в базу данных. Сначала мы должны дать Django знать, что сделали изменения в нашей модели (мы её только что создали!). Набери python manage.py makemigrations blog. Должно получиться примерно так:</p>
+<pre>
+python manage.py makemigrations blog
+Migrations for 'blog':
+  0001_initial.py:
+  - Create model Post
+</pre>
+<p>Django создал для нас файл с миграцией для базы данных. Набери python manage.py migrate blog, результат должен быть следующим:</p>
+<pre>
+python manage.py migrate blog
+Operations to perform:
+  Apply all migrations: blog
+Running migrations:
+  Rendering model states... DONE
+  Applying blog.0001_initial... OK
+</pre>
+
+<br>
+<p>Оставьте ваш комментарий:</p>
+<form action="" method="post">
+{%csrf_token%}
+	<textarea maxlength="300" rows="2" cols="80" name="comment"
+	{%if anonymous%}
+	placeholder="Для отправки комментария вам необходимо войти." 
+	{%else%}
+	placeholder="Ваш комментарий" 
+	{%endif%}
+	></textarea><br>
+	<input type="submit" name="" value="Отправить" style="width: 15em; height: 4em; ">
+</form>
+{%for comment in comments%}
+
+<div {%if forloop.counter|divisibleby:2 %}style="text-align:right; width:60%; margin-left: 20%; background: #f2f2f2" {%else%}style="text-align:left; width:60%; margin-left: 20%;" {%endif%}>
+{{comment.user_name}}:<br>
+<div style="">{{comment.context}}</div>
+{{comment.date|date:"d F, Y"}}
+</div>
+
+{%endfor%}
+{%endblock%}

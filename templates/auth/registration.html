@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{%load staticfiles%}
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link type="text/css" href="{% static 'login.css'%}" rel="stylesheet">
+</head>
+<body>
+
+<div id="header">
+
+
+<div id="enter-registration">
+	<div id="enter">
+	<a href="/login"><i>Войти</i></a>
+</div>
+
+<div id="registration">
+	<a href="#"><i>Регистрация</i></a>
+</div>
+</div>
+
+	<div id="menu">
+		<ul>
+			<li><a href="/">Главная</a></li>
+			<li><a href="/about">О проекте</a></li>
+			<li><a href="/articles">Все статьи</a></li>
+			<li><a href="/other_sources">Другие источники</a></li>
+			<li>
+				
+			</li>
+		</ul>
+		
+	</div>
+
+</div>
+
+
+<div class="login">
+<p style="text-align:center; font-family:sans-serif; font-size: 1.2em">Регистрация</p><hr><br>
+<form action="" method="post">
+{%csrf_token%}
+	<p>Ваше имя:</p><p>{{form.name}}</p>
+	<p>Электронная почта:</p><p>{{form.e_mail}}</p>
+	<p>Пароль:</p><p>{{form.password1}}</p>
+	<p>Повторите пароль:</p><p>{{form.password2}}</p>
+	<br>
+	<p><input type="submit" value="Зарегистрироваться"></p>
+</form>
+</div>
+
+
+</body>
+</html>

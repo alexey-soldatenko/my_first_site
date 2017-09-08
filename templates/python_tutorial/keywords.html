@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+Ключевые слова в python.
+{%endblock%}
+{%block article_name%}
+Ключевые слова в Python.
+{%endblock%}
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+{%block context%}
+<p><span style="color: red">False</span> - ложь.</p>
+
+<p><span style="color:red">True</span> - правда.</p>
+
+<p><span style="color:red">None</span> - "пустой" объект.</p>
+
+<p><span style="color:red">and</span> - логическое И.</p>
+
+<p><span style="color:red">with / as</span> - менеджер контекста.</p>
+
+<p><span style="color:red">assert</span> условие - возбуждает исключение, если условие ложно.</p>
+
+<p><span style="color:red">break</span> - выход из цикла.</p>
+
+<p><span style="color:red">class</span> - пользовательский тип, состоящий из методов и атрибутов.</p>
+
+<p><span style="color:red">continue</span> - переход на следующую итерацию цикла.</p>
+
+<p><span style="color:red">def</span> - определение функции.</p>
+
+<p><span style="color:red">del</span> - удаление объекта.</p>
+
+<p><span style="color:red">elif</span> - в противном случае, если.</p>
+
+<p><span style="color:red">else</span> - см. for/else или if/else.</p>
+
+<p><span style="color:red">except</span> - перехватить исключение.</p>
+
+<p><span style="color:red">finally</span> - вкупе с инструкцией try, выполняет инструкции независимо от того, было ли исключение или нет.</p>
+
+<p><span style="color:red">for</span> - цикл for.</p>
+
+<p><span style="color:red">from</span> - импорт нескольких функций из модуля.</p>
+
+<p><span style="color:red">globa</span>l - позволяет сделать значение переменной, присвоенное ей внутри функции, доступным и за пределами этой функции.</p>
+
+<p><span style="color:red">if</span> - если.</p>
+
+<p><span style="color:red">import</span> - импорт модуля.</p>
+
+<p><span style="color:red">in</span> - проверка на вхождение.</p>
+
+<p><span style="color:red">is</span> - ссылаются ли 2 объекта на одно и то же место в памяти.</p>
+
+<p><span style="color:red">lambda</span> - определение анонимной функции.</p>
+
+<p><span style="color:red">nonlocal</span> - позволяет сделать значение переменной, присвоенное ей внутри функции, доступным в объемлющей инструкции.</p>
+
+<p><span style="color:red">not</span> - логическое НЕ.</p>
+
+<p><span style="color:red">or</span> - логическое ИЛИ.</p>
+
+<p><span style="color:red">pass</span> - ничего не делающая конструкция.</p>
+
+<p><span style="color:red">raise</span> - возбудить исключение.</p>
+
+<p><span style="color:red">return</span> - вернуть результат.</p>
+
+<p><span style="color:red">try</span> - выполнить инструкции, перехватывая исключения.</p>
+
+<p><span style="color:red">while</span> - цикл while.</p>
+
+<p><span style="color:red">yield</span> - определение функции-генератора.</p><br>
+
+<form action="" method="post">
+{%csrf_token%}
+	<textarea maxlength="300" rows="2" cols="80" name="comment"
+	{%if anonymous%}
+	placeholder="Для отправки комментария вам необходимо войти." 
+	{%else%}
+	placeholder="Ваш комментарий" 
+	{%endif%}
+	></textarea><br>
+	<input type="submit" name="" value="Отправить" style="width: 15em; height: 4em; ">
+</form>
+{%for comment in comments%}
+
+<div {%if forloop.counter|divisibleby:2 %}style="text-align:right; width:60%; margin-left: 20%; background: #f2f2f2" {%else%}style="text-align:left; width:60%; margin-left: 20%;" {%endif%}>
+{{comment.user_name}}:<br>
+<div style="">{{comment.context}}</div>
+{{comment.date|date:"d F, Y"}}
+</div>
+{%endfor%}
+
+{%endblock%}

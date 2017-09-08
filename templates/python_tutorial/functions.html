@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+Работа с функциями в python.
+{%endblock%}
+{%block article_name%}
+Функции в Python.
+{%endblock%}
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+{%block context%}
+<p>Функция в python - объект, принимающий аргументы и возвращающий значение. Обычно функция определяется с помощью инструкции <span style="color:red">def</span>.
+
+Определим простейшую функцию:</p>
+<pre>
+>>>def sum(x, y):
+...   return x+y
+</pre>
+<p>Инструкция <span style="color:red">return</span> говорит, что нужно вернуть значение. В нашем случае функция возвращает сумму x и y.
+
+Теперь мы ее можем вызвать:</p>
+
+<p>Функция может быть любой сложности и возвращать любые объекты (списки, кортежи, и даже функции!): </p>
+
+<p>Функция может и не заканчиваться инструкцией return, при этом функция вернет значение None: </p>
+<pre>
+>>> def func(a, b):
+...     c = a + b
+... 
+>>> r = func(1, 2)
+>>> r
+>>> type(r)
+&lt;class 'NoneType'>
+
+</pre>
+
+<p>Аргументы функции</p><br>
+
+<p>Функция может принимать произвольное количество аргументов или не принимать их вовсе. Также распространены функции с произвольным числом аргументов, функции с позиционными и именованными аргументами, обязательными и необязательными.</p>
+
+<p>Функция также может принимать переменное количество позиционных аргументов, тогда перед именем ставится *:</p>
+
+<pre>
+>>> def func(*args):
+...     return args
+...
+>>> func(1, 2, 3, 'abc')
+(1, 2, 3, 'abc')
+>>> func()
+()
+>>> func(1)
+(1,) </pre>
+
+<p>Как видно из примера,<span style="color:red">args</span> - это кортеж из всех переданных аргументов функции, и с переменной можно работать также, как и с кортежем.
+
+Функция может принимать и произвольное число именованных аргументов, тогда перед именем ставится **:</p>
+
+<p>В переменной kwargs у нас хранится словарь, с которым мы, опять-таки, можем делать все, что нам заблагорассудится.</p><br>
+
+<p>Анонимные функции</p><br>
+
+<p>Анонимные функции могут содержать лишь одно выражение, но и выполняются они быстрее. Анонимные функции создаются с помощью инструкции <span style="color:red">lambda</span>. Кроме этого, их не обязательно присваивать переменной, как делали мы инструкцией def func():</p>
+<pre>
+>>> func = lambda x, y: x + y
+>>> func(1, 2)
+3
+>>> func('a', 'b')
+'ab'
+>>> (lambda x, y: x + y)(1, 2)
+3
+>>> (lambda x, y: x + y)('a', 'b')
+'ab'
+</pre>
+<p>lambda функции, в отличие от обычной, не требуется инструкция return, а в остальном, ведет себя точно так же:</p>
+
+<br>
+
+<form action="" method="post">
+{%csrf_token%}
+	<textarea maxlength="300" rows="2" cols="80" name="comment"
+	{%if anonymous%}
+	placeholder="Для отправки комментария вам необходимо войти." 
+	{%else%}
+	placeholder="Ваш комментарий" 
+	{%endif%}
+	></textarea><br>
+	<input type="submit" name="" value="Отправить" style="width: 15em; height: 4em; ">
+</form>
+{%for comment in comments%}
+
+<div {%if forloop.counter|divisibleby:2 %}style="text-align:right; width:60%; margin-left: 20%; background: #f2f2f2" {%else%}style="text-align:left; width:60%; margin-left: 20%;" {%endif%}>
+{{comment.user_name}}:<br>
+<div style="">{{comment.context}}</div>
+{{comment.date|date:"d F, Y"}}
+</div>
+{%endfor%}
+
+{%endblock%}

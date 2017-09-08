@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+Search result
+{%endblock%}
+{%block article_name%}
+Результаты поиска
+{%endblock%}
+
+
+
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+
+
+
+
+{%block context%}
+{%if not list_articles%}
+<p>Ничего не найдено.</p>
+{%endif%}
+{%for article in list_articles%}
+<p><a href="/{{article.part}}/{{article.url_name}}">{{article.title}}</a></p>
+{%endfor%}
+{%endblock%}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+ООП в python.
+{%endblock%}
+{%block article_name%}
+Принципы ООП в Python. Классы.
+{%endblock%}
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+{%block context%}
+<p>Объектно-ориентированное программирование (ООП) — парадигма программирования, в которой основными концепциями являются понятия объектов и классов.</p>
+
+<p>Класс — тип, описывающий устройство объектов. Объект — это экземпляр класса. Класс можно сравнить с чертежом, по которому создаются объекты.</p>
+
+<p>Python соответствует принципам объектно-ориентированного программирования. В python всё является объектами - и строки, и списки, и словари, и всё остальное.</p>
+
+<p>Но возможности ООП в python этим не ограничены. Программист может написать свой тип данных (класс), определить в нём свои методы.</p>
+
+<p>Это не является обязательным - мы можем пользоваться только встроенными объектами. Однако ООП полезно при долгосрочной разработке программы несколькими людьми, так как упрощает понимание кода.</p>
+
+<p>Приступим теперь собственно к написанию своих классов на python. Попробуем определить собственный класс:</p>
+<pre>
+>>> # Пример простейшего класса, который ничего не делает
+... class A:
+...     pass</pre>
+
+<p>Теперь мы можем создать несколько экземпляров этого класса: </p>
+
+<pre>>>> a = A()
+>>> b = A()
+>>> a.arg = 1  # у экземпляра a появился атрибут arg, равный 1
+>>> b.arg = 2  # а у экземпляра b - атрибут arg, равный 2
+>>> print(a.arg)
+1
+>>> print(b.arg)
+2
+>>> c = A()
+>>> print(c.arg)  # а у этого экземпляра нет arg
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'A' object has no attribute 'arg'</p>
+
+</pre>
+<p>Мы можем также задавать значения полей в момент создания экземпляра. Для этой цели нам необходимо определить функцию конструктора класса __init__():</p>
+<pre>
+>>> class A():
+...     def __init__(self, first, second):
+...             self.one = first
+...             self.two = second
+... 
+>>> a = A(1, 'string')
+>>> a.one
+1
+>>> a.two
+'string'
+</pre>
+<p>Уже не секрет, что классу возможно задать собственные методы, такие как __init__(). Однако следует отметить, что при создании своих методов не нужно использовать двойные подчеркивания, так как данный стиль оформления методов используется встроенными средствами.</p>
+<pre>
+>>> class B():
+...     name = 'Alexandr'
+...     def print_name(self):
+...             print(self.name)
+... 
+>>> b = B()
+>>> b.print_name()
+Alexandr
+</pre>
+<p>Также важно отметить, что все функции класса в качестве первого аргумента получают self, т.е ссылку на самого себя, чтобы иметь возможность получить доступ к собственным полям и методам.</p>
+
+<br>
+
+<form action="" method="post">
+{%csrf_token%}
+	<textarea maxlength="300" rows="2" cols="80" name="comment"
+	{%if anonymous%}
+	placeholder="Для отправки комментария вам необходимо войти." 
+	{%else%}
+	placeholder="Ваш комментарий" 
+	{%endif%}
+	></textarea><br>
+	<input type="submit" name="" value="Отправить" style="width: 15em; height: 4em; ">
+</form>
+{%for comment in comments%}
+
+<div {%if forloop.counter|divisibleby:2 %}style="text-align:right; width:60%; margin-left: 20%; background: #f2f2f2" {%else%}style="text-align:left; width:60%; margin-left: 20%;" {%endif%}>
+{{comment.user_name}}:<br>
+<div style="">{{comment.context}}</div>
+{{comment.date|date:"d F, Y"}}
+</div>
+{%endfor%}
+
+{%endblock%}

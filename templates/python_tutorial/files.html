@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{%block title%}
+Работа с файлами в python.
+{%endblock%}
+{%block article_name%}
+Работа с файлами в Python.
+{%endblock%}
+
+{% block user_in_out %}
+{%if not anonymous %}
+<p style="color: white; text-align: center">Добро пожаловать,<br>
+<a href="/logout" title= "Выйти" style="color: white">{{user}}</a></p>
+{%else%}
+{{block.super}}
+{%endif%}
+{%endblock%}
+
+{%block context%}
+<p>В данной статье мы рассмотрим встроенные средства python для работы с файлами: открытие / закрытие, чтение и запись.</p>
+
+<p>Итак, начнем. Прежде, чем работать с файлом, его надо открыть. С этим замечательно справится встроенная функция <span style="color:red">open</span>:</p>
+
+<pre>
+
+>>>f = open('text.txt', 'r')
+
+</pre>
+<p>У функции <span style="color:red">open</span> много параметров, нам пока важны 3 аргумента: первый, это имя файла. Путь к файлу может быть относительным или абсолютным. Второй аргумент, это режим, в котором мы будем открывать файл.</p>
+
+<p>Режимы могут быть объединены, то есть, к примеру, <span style="color:red">'rb'</span> - чтение в двоичном режиме. По умолчанию режим равен <span style="color:red">'rt'</span>.</p>
+
+<p>И последний аргумент, encoding, нужен только в текстовом режиме чтения файла. Этот аргумент задает кодировку. </p><br>
+
+
+<p>Чтение из файла</p>
+<br>
+<p>Открыли мы файл, а теперь мы хотим прочитать из него информацию. Для этого есть несколько способов, но большого интереса заслуживают лишь два из них.
+
+Первый - метод <span style="color:red">read()</span>, читающий весь файл целиком, если был вызван без аргументов, и n символов, если был вызван с аргументом (целым числом n).</p>
+<pre>
+>>> f = open('text.txt')
+>>> f.read(1)
+'H'
+>>> f.read()
+'ello world!\nThe end.\n\n'</pre>
+<p>Ещё один способ сделать это - прочитать файл построчно, воспользовавшись циклом for:</p>
+<pre>
+>>> f = open('text.txt')
+>>> for line in f:
+...     line
+...
+'Hello world!\n'
+'\n'
+'The end.\n'
+'\n'</pre>
+<p>Запись в файл</p>
+<p>Откроем файл на запись:</p>
+<pre>
+
+>>> f = open('text.txt', 'w')
+
+</pre>
+<p>Запись в файл осуществляется с помощью метода write:</p>
+<pre>>>> for index in l:
+...     f.write(index + '\n')
+...
+4
+3
+3
+3
+3</pre>
+<p>Метод write возвращает число записанных символов.
+
+После окончания работы с файлом его обязательно нужно закрыть с помощью метода <span style="color:red">close()</span>:
+<pre>
+
+>>> f.close()</p>
+</pre>
+<p>Для того, чтобы не забыть закрыть файл на помощь приходит оператор <span style="color:red">with/as</span>. Он действует таким образом, что всё содержимое в его области видимости закрывается по мере выхода из этой зоны.</p>
+<pre>
+>>> with open('Python_projects/test1.txt', 'r') as file:
+...     f = file.read()
+... 
+>>> file
+&lt;_io.TextIOWrapper name='Python_projects/test1.txt' mode='r' encoding='UTF-8'>
+>>> f
+'Первая строка\nВторая строка\nТретья'
+
+</pre>
+
+<form action="" method="post">
+{%csrf_token%}
+	<textarea maxlength="300" rows="2" cols="80" name="comment"
+	{%if anonymous%}
+	placeholder="Для отправки комментария вам необходимо войти." 
+	{%else%}
+	placeholder="Ваш комментарий" 
+	{%endif%}
+	></textarea><br>
+	<input type="submit" name="" value="Отправить" style="width: 15em; height: 4em; ">
+</form>
+{%for comment in comments%}
+
+<div {%if forloop.counter|divisibleby:2 %}style="text-align:right; width:60%; margin-left: 20%; background: #f2f2f2" {%else%}style="text-align:left; width:60%; margin-left: 20%;" {%endif%}>
+{{comment.user_name}}:<br>
+<div style="">{{comment.context}}</div>
+{{comment.date|date:"d F, Y"}}
+</div>
+{%endfor%}
+
+{%endblock%}
